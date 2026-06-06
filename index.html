@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Pay Clock"/>
+  <meta name="theme-color" content="#0d0d0d"/>
+  <title>Pay Clock</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #242424;
+      --green: #00e87a;
+      --green-dim: #00a855;
+      --orange: #ff9500;
+      --red: #ff3b5c;
+      --fg: #e8e8e8;
+      --dim: #505050;
+      --dim2: #2e2e2e;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Rajdhani', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: env(safe-area-inset-top, 20px) 0 env(safe-area-inset-bottom, 16px);
+      min-height: 100dvh;
+    }
+
+    /* Subtle grid texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,232,122,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,232,122,0.015) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 0;
+    }
+
+    /* ── Header ── */
+    .header {
+      padding-top: 12px;
+      padding-bottom: 8px;
+    }
+
+    .day-label {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .date-line {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .day-name {
+      font-family: var(--sans);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .day-name.weekday { color: var(--fg); }
+    .day-name.saturday { color: var(--orange); }
+    .day-name.sunday { color: var(--red); }
+
+    .rate-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .rate-badge.x1 { background: #1a2a22; color: var(--green); border: 1px solid #1e3a2a; }
+    .rate-badge.x15 { background: #2a2010; color: var(--orange); border: 1px solid #3a2e10; }
+    .rate-badge.x2 { background: #2a1020; color: var(--red); border: 1px solid #3a1a28; }
+
+    /* ── Inputs ── */
+    .inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .input-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+    }
+
+    .input-group:focus-within {
+      border-color: var(--green-dim);
+    }
+
+    .input-group.disabled {
+      opacity: 0.35;
+    }
+
+    .input-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .input-prefix {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--dim);
+    }
+
+    input[type="number"] {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 20px;
+      width: 100%;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:disabled { color: var(--dim); }
+
+    /* ── Segment Preview ── */
+    .segments {
+      margin-top: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .seg-title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+
+    .seg-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .seg-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .seg-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      min-width: 34px;
+      text-align: center;
+    }
+    .seg-pill.x1 { background: #1a2a22; color: var(--green); }
+    .seg-pill.x15 { background: #2a2010; color: var(--orange); }
+    .seg-pill.x2 { background: #2a1020; color: var(--red); }
+
+    .seg-detail { color: var(--dim); flex: 1; }
+    .seg-pay { color: var(--fg); font-weight: bold; }
+
+    .seg-total {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .seg-total-label { color: var(--dim); }
+    .seg-total-val { color: var(--green); }
+
+    /* ── Big Display ── */
+    .display-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 4px 0;
+    }
+
+    .earned-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 4px;
+    }
+
+    .earned-display {
+      font-family: var(--mono);
+      font-size: clamp(44px, 14vw, 64px);
+      color: var(--green);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      transition: color 0.4s;
+      text-shadow: 0 0 40px rgba(0,232,122,0.2);
+    }
+
+    .earned-display.ot { color: var(--orange); text-shadow: 0 0 40px rgba(255,149,0,0.2); }
+    .earned-display.sunday { color: var(--red); text-shadow: 0 0 40px rgba(255,59,92,0.2); }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--dim2);
+      border-radius: 3px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.1s linear, background 0.4s;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(0,232,122,0.4);
+      position: relative;
+    }
+
+    .progress-fill.ot { background: var(--orange); box-shadow: 0 0 8px rgba(255,149,0,0.4); }
+    .progress-fill.sunday { background: var(--red); box-shadow: 0 0 8px rgba(255,59,92,0.4); }
+
+    .ot-marker {
+      position: absolute;
+      top: -4px;
+      width: 2px;
+      height: 14px;
+      background: var(--dim);
+      border-radius: 1px;
+      display: none;
+    }
+
+    .progress-times {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      padding: 16px;
+      transition: transform 0.1s, opacity 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.4; cursor: default; }
+
+    .btn-start {
+      background: var(--green);
+      color: #000;
+    }
+    .btn-start.paused {
+      background: var(--dim2);
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+
+    .btn-reset {
+      background: var(--dim2);
+      color: var(--dim);
+      border: 1px solid var(--border);
+      font-size: 15px;
+    }
+
+    .status {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 10px;
+      letter-spacing: 0.08em;
+      min-height: 16px;
+      padding-bottom: 4px;
+    }
+
+    .pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="day-label">Today</div>
+    <div class="date-line">
+      <div class="day-name" id="dayName">Monday</div>
+      <div class="rate-badge x1" id="rateBadge">1x</div>
+    </div>
+  </div>
+
+  <!-- Inputs -->
+  <div class="inputs">
+    <div class="input-group" id="hourlyGroup">
+      <span class="input-label">Hourly Rate</span>
+      <div class="input-row">
+        <span class="input-prefix">$</span>
+        <input type="number" id="hourlyInput" value="32.50" step="0.01" min="0" inputmode="decimal"/>
+      </div>
+    </div>
+    <div class="input-group" id="otGroup">
+      <span class="input-label">OT Hours</span>
+      <div class="input-row">
+        <input type="number" id="otInput" value="0" step="0.5" min="0" inputmode="decimal" style="text-align:right"/>
+        <span class="input-prefix">h</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Segment preview -->
+  <div class="segments">
+    <div class="seg-title">Today's Schedule</div>
+    <div class="seg-rows" id="segRows"></div>
+    <div class="seg-total">
+      <span class="seg-total-label">DAY TOTAL</span>
+      <span class="seg-total-val" id="dayTotalVal">$0.00</span>
+    </div>
+  </div>
+
+  <!-- Big number -->
+  <div class="display-wrap">
+    <div class="earned-label">Earned This Shift</div>
+    <div class="earned-display" id="earnedDisplay">$0.00</div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="ot-marker" id="otMarker"></div>
+      </div>
+      <div class="progress-times">
+        <span id="elapsedTime">00:00:00</span>
+        <span id="remainingTime">--:--:--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="btn-row">
+    <button class="btn btn-start" id="startBtn" onclick="toggleStart()">START</button>
+    <button class="btn btn-reset" onclick="resetAll()">RESET</button>
+  </div>
+  <div class="status" id="status">Enter rate &amp; OT hours, then tap START</div>
+
+</div>
+
+<script>
+  // ── State ──
+  let running = false;
+  let elapsed = 0;      // seconds
+  let lastTick = null;
+  let rafId = null;
+  let breakpoints = []; // [{endSec, rateSec}]
+  let dayMax = 0;
+  let inOT = false;
+
+  const weekday = new Date().getDay(); // 0=Sun, 6=Sat
+
+  // ── Init header ──
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dn = document.getElementById('dayName');
+  const rb = document.getElementById('rateBadge');
+  dn.textContent = days[weekday];
+
+  if (weekday === 0) {
+    dn.className = 'day-name sunday';
+    rb.textContent = '2×'; rb.className = 'rate-badge x2';
+    document.getElementById('otGroup').classList.add('disabled');
+    document.getElementById('otInput').disabled = true;
+  } else if (weekday === 6) {
+    dn.className = 'day-name saturday';
+    rb.textContent = '1.5×'; rb.className = 'rate-badge x15';
+    document.getElementById('otGroup').classList.add('disabled');
+    document.getElementById('otInput').disabled = true;
+  } else {
+    dn.className = 'day-name weekday';
+    rb.textContent = '1× + OT'; rb.className = 'rate-badge x1';
+  }
+
+  // ── Schedule ──
+  function buildSchedule(hourly, otHours) {
+    const segs = [];
+    if (weekday === 0) {         // Sunday 2x
+      segs.push({ hours: 8 + otHours, mult: 2.0 });
+    } else if (weekday === 6) {  // Saturday 1.5x
+      segs.push({ hours: 8 + otHours, mult: 1.5 });
+    } else {                     // M–F
+      segs.push({ hours: 8, mult: 1.0 });
+      if (otHours > 0) segs.push({ hours: otHours, mult: 1.5 });
+    }
+
+    let t = 0;
+    const bp = [];
+    for (const s of segs) {
+      const rateSec = (hourly * s.mult) / 3600;
+      t += s.hours * 3600;
+      bp.push({ endSec: t, rateSec });
+    }
+    return bp;
+  }
+
+  function earnedAt(sec) {
+    let total = 0, prev = 0;
+    for (const bp of breakpoints) {
+      if (sec <= prev) break;
+      const chunk = Math.min(sec, bp.endSec) - prev;
+      total += chunk * bp.rateSec;
+      prev = bp.endSec;
+      if (sec <= bp.endSec) break;
+    }
+    return total;
+  }
+
+  function refreshSchedule() {
+    const hourly = parseFloat(document.getElementById('hourlyInput').value) || 0;
+    const ot = weekday === 0 || weekday === 6 ? 0 : (parseFloat(document.getElementById('otInput').value) || 0);
+    breakpoints = buildSchedule(hourly, ot);
+    dayMax = earnedAt(breakpoints[breakpoints.length - 1].endSec);
+
+    // Segment rows
+    const segRows = document.getElementById('segRows');
+    segRows.innerHTML = '';
+    const segs = weekday === 0
+      ? [{ hours: 8 + ot, mult: 2.0 }]
+      : weekday === 6
+        ? [{ hours: 8 + ot, mult: 1.5 }]
+        : [{ hours: 8, mult: 1.0 }, ...(ot > 0 ? [{ hours: ot, mult: 1.5 }] : [])];
+
+    for (const s of segs) {
+      const pay = hourly * s.mult * s.hours;
+      const cls = s.mult === 2 ? 'x2' : s.mult === 1.5 ? 'x15' : 'x1';
+      const label = s.mult === 2 ? '2×' : s.mult === 1.5 ? '1.5×' : '1×';
+      const row = document.createElement('div');
+      row.className = 'seg-row';
+      row.innerHTML = `
+        <span class="seg-pill ${cls}">${label}</span>
+        <span class="seg-detail">${s.hours}h @ $${(hourly * s.mult).toFixed(2)}/hr</span>
+        <span class="seg-pay">$${pay.toFixed(2)}</span>
+      `;
+      segRows.appendChild(row);
+    }
+
+    document.getElementById('dayTotalVal').textContent = `$${dayMax.toFixed(2)}`;
+
+    // OT marker position
+    const marker = document.getElementById('otMarker');
+    if (weekday < 6 && weekday > 0 && ot > 0 && breakpoints.length > 1) {
+      const otFrac = (8 * 3600) / breakpoints[breakpoints.length - 1].endSec;
+      marker.style.left = `calc(${otFrac * 100}% - 1px)`;
+      marker.style.display = 'block';
+    } else {
+      marker.style.display = 'none';
+    }
+  }
+
+  document.getElementById('hourlyInput').addEventListener('input', () => { if (!running) refreshSchedule(); });
+  document.getElementById('otInput').addEventListener('input', () => { if (!running) refreshSchedule(); });
+
+  // ── Load saved rate ──
+  const saved = localStorage.getItem('salary_hourly');
+  if (saved) document.getElementById('hourlyInput').value = saved;
+  refreshSchedule();
+
+  // ── Timer ──
+  function tick(ts) {
+    if (!running) return;
+    if (lastTick === null) lastTick = ts;
+    const delta = (ts - lastTick) / 1000;
+    lastTick = ts;
+    elapsed += delta;
+
+    const totalSec = breakpoints[breakpoints.length - 1].endSec;
+    const clampedElapsed = Math.min(elapsed, totalSec);
+    const earned = earnedAt(clampedElapsed);
+
+    // Detect OT zone
+    const nowInOT = weekday < 6 && weekday > 0 && elapsed > 8 * 3600;
+    if (nowInOT !== inOT) {
+      inOT = nowInOT;
+      updateColors();
+    }
+
+    // Display
+    document.getElementById('earnedDisplay').textContent = '$' + earned.toFixed(2);
+
+    // Progress
+    const pct = Math.min(clampedElapsed / totalSec * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    // Times
+    document.getElementById('elapsedTime').textContent = fmtTime(clampedElapsed);
+    const rem = Math.max(totalSec - elapsed, 0);
+    document.getElementById('remainingTime').textContent = fmtTime(rem);
+
+    if (elapsed >= totalSec) {
+      complete();
+      return;
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function fmtTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = Math.floor(sec % 60);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function updateColors() {
+    const disp = document.getElementById('earnedDisplay');
+    const fill = document.getElementById('progressFill');
+    if (weekday === 0) {
+      disp.className = 'earned-display sunday';
+      fill.className = 'progress-fill sunday';
+    } else if (inOT) {
+      disp.className = 'earned-display ot';
+      fill.className = 'progress-fill ot';
+    } else {
+      disp.className = 'earned-display';
+      fill.className = 'progress-fill';
+    }
+  }
+
+  function complete() {
+    running = false;
+    lastTick = null;
+    const btn = document.getElementById('startBtn');
+    btn.disabled = true;
+    btn.textContent = 'DONE';
+    document.getElementById('status').textContent = 'SHIFT COMPLETE';
+    document.getElementById('status').classList.remove('pulse');
+  }
+
+  // ── Controls ──
+  function toggleStart() {
+    if (running) {
+      pauseTimer();
+    } else {
+      startTimer();
+    }
+  }
+
+  function startTimer() {
+    const hourly = parseFloat(document.getElementById('hourlyInput').value);
+    if (!hourly || hourly <= 0) {
+      document.getElementById('status').textContent = 'Enter a valid hourly rate first';
+      return;
+    }
+    localStorage.setItem('salary_hourly', hourly);
+    refreshSchedule();
+
+    running = true;
+    lastTick = null;
+    inOT = false;
+    updateColors();
+
+    document.getElementById('hourlyInput').disabled = true;
+    document.getElementById('otInput').disabled = true;
+    document.getElementById('startBtn').textContent = 'PAUSE';
+    document.getElementById('startBtn').classList.remove('paused');
+    document.getElementById('status').textContent = 'RUNNING';
+    document.getElementById('status').classList.add('pulse');
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function pauseTimer() {
+    running = false;
+    lastTick = null;
+    if (rafId) cancelAnimationFrame(rafId);
+    document.getElementById('startBtn').textContent = 'RESUME';
+    document.getElementById('startBtn').classList.add('paused');
+    document.getElementById('status').textContent = 'PAUSED';
+    document.getElementById('status').classList.remove('pulse');
+  }
+
+  function resetAll() {
+    running = false;
+    lastTick = null;
+    elapsed = 0;
+    inOT = false;
+    if (rafId) cancelAnimationFrame(rafId);
+
+    document.getElementById('earnedDisplay').textContent = '$0.00';
+    document.getElementById('earnedDisplay').className = 'earned-display';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressFill').className = 'progress-fill';
+    document.getElementById('elapsedTime').textContent = '00:00:00';
+    document.getElementById('remainingTime').textContent = '--:--:--';
+
+    const btn = document.getElementById('startBtn');
+    btn.textContent = 'START';
+    btn.className = 'btn btn-start';
+    btn.disabled = false;
+
+    document.getElementById('hourlyInput').disabled = false;
+    if (weekday !== 0 && weekday !== 6) document.getElementById('otInput').disabled = false;
+    document.getElementById('status').textContent = 'Enter rate & OT hours, then tap START';
+    document.getElementById('status').classList.remove('pulse');
+
+    refreshSchedule();
+  }
+
+  // ── Service Worker ──
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
