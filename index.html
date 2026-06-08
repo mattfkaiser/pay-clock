@@ -46,7 +46,6 @@
       min-height: 100dvh;
     }
 
-    /* Subtle grid texture */
     body::before {
       content: '';
       position: fixed;
@@ -68,17 +67,15 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      gap: 0;
     }
 
     /* ── Header ── */
     .header {
       padding-top: 12px;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
     }
 
     .day-label {
-      font-family: var(--sans);
       font-size: 13px;
       font-weight: 300;
       letter-spacing: 0.18em;
@@ -94,13 +91,11 @@
     }
 
     .day-name {
-      font-family: var(--sans);
       font-size: 28px;
       font-weight: 700;
       letter-spacing: 0.04em;
       line-height: 1;
     }
-
     .day-name.weekday { color: var(--fg); }
     .day-name.saturday { color: var(--orange); }
     .day-name.sunday { color: var(--red); }
@@ -112,78 +107,87 @@
       border-radius: 3px;
       letter-spacing: 0.05em;
     }
-    .rate-badge.x1 { background: #1a2a22; color: var(--green); border: 1px solid #1e3a2a; }
+    .rate-badge.x1  { background: #1a2a22; color: var(--green);  border: 1px solid #1e3a2a; }
     .rate-badge.x15 { background: #2a2010; color: var(--orange); border: 1px solid #3a2e10; }
-    .rate-badge.x2 { background: #2a1020; color: var(--red); border: 1px solid #3a1a28; }
+    .rate-badge.x2  { background: #2a1020; color: var(--red);    border: 1px solid #3a1a28; }
 
-    /* ── Inputs ── */
+    /* ── Input grid ── */
     .inputs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .input-group {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 8px 10px;
       transition: border-color 0.2s;
     }
-
-    .input-group:focus-within {
-      border-color: var(--green-dim);
-    }
-
-    .input-group.disabled {
-      opacity: 0.35;
-    }
+    .input-group:focus-within { border-color: var(--green-dim); }
+    .input-group.disabled { opacity: 0.35; }
 
     .input-label {
-      font-family: var(--sans);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--dim);
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .input-row {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
     }
 
     .input-prefix {
       font-family: var(--mono);
-      font-size: 16px;
+      font-size: 14px;
       color: var(--dim);
+      flex-shrink: 0;
     }
 
-    input[type="number"] {
+    input[type="number"], input[type="time"] {
       background: none;
       border: none;
       outline: none;
       color: var(--fg);
       font-family: var(--mono);
-      font-size: 20px;
+      font-size: 18px;
       width: 100%;
       -moz-appearance: textfield;
     }
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-    input[type="number"]:disabled { color: var(--dim); }
+    input[type="number"]:disabled,
+    input[type="time"]:disabled { color: var(--dim); }
+
+    /* iOS time input color fix */
+    input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.4); }
+
+    /* clock-in time badge shown while running */
+    .clockin-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 6px;
+      text-align: center;
+      min-height: 14px;
+      letter-spacing: 0.06em;
+    }
 
     /* ── Segment Preview ── */
     .segments {
-      margin-top: 12px;
+      margin-top: 8px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 8px 12px;
     }
 
     .seg-title {
@@ -192,41 +196,46 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--dim);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .seg-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
+    .seg-rows { display: flex; flex-direction: column; gap: 4px; }
 
     .seg-row {
       display: flex;
       align-items: center;
       gap: 8px;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .seg-pill {
       font-size: 10px;
       font-weight: 700;
-      padding: 2px 6px;
+      padding: 2px 5px;
       border-radius: 2px;
-      min-width: 34px;
+      min-width: 32px;
       text-align: center;
+      flex-shrink: 0;
     }
-    .seg-pill.x1 { background: #1a2a22; color: var(--green); }
+    .seg-pill.x1  { background: #1a2a22; color: var(--green); }
     .seg-pill.x15 { background: #2a2010; color: var(--orange); }
-    .seg-pill.x2 { background: #2a1020; color: var(--red); }
+    .seg-pill.x2  { background: #2a1020; color: var(--red); }
 
     .seg-detail { color: var(--dim); flex: 1; }
-    .seg-pay { color: var(--fg); font-weight: bold; }
+    .seg-pay    { color: var(--fg); font-weight: bold; }
+
+    /* end time column */
+    .seg-end {
+      color: var(--dim);
+      font-size: 11px;
+      min-width: 42px;
+      text-align: right;
+    }
 
     .seg-total {
-      margin-top: 8px;
-      padding-top: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -234,7 +243,7 @@
       font-size: 12px;
     }
     .seg-total-label { color: var(--dim); }
-    .seg-total-val { color: var(--green); }
+    .seg-total-val   { color: var(--green); }
 
     /* ── Big Display ── */
     .display-wrap {
@@ -243,46 +252,40 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative;
-      margin: 4px 0;
+      margin: 2px 0;
     }
 
     .earned-label {
-      font-family: var(--sans);
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--dim);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .earned-display {
       font-family: var(--mono);
-      font-size: clamp(44px, 14vw, 64px);
+      font-size: clamp(42px, 13vw, 62px);
       color: var(--green);
       letter-spacing: -0.02em;
       line-height: 1;
       transition: color 0.4s;
       text-shadow: 0 0 40px rgba(0,232,122,0.2);
     }
-
-    .earned-display.ot { color: var(--orange); text-shadow: 0 0 40px rgba(255,149,0,0.2); }
-    .earned-display.sunday { color: var(--red); text-shadow: 0 0 40px rgba(255,59,92,0.2); }
+    .earned-display.ot     { color: var(--orange); text-shadow: 0 0 40px rgba(255,149,0,0.2); }
+    .earned-display.sunday { color: var(--red);    text-shadow: 0 0 40px rgba(255,59,92,0.2); }
 
     /* ── Progress ── */
-    .progress-wrap {
-      width: 100%;
-      margin-top: 12px;
-    }
+    .progress-wrap { width: 100%; margin-top: 10px; }
 
     .progress-track {
       width: 100%;
       height: 6px;
       background: var(--dim2);
       border-radius: 3px;
-      overflow: visible;
       position: relative;
+      overflow: visible;
     }
 
     .progress-fill {
@@ -292,11 +295,9 @@
       transition: width 0.1s linear, background 0.4s;
       background: var(--green);
       box-shadow: 0 0 8px rgba(0,232,122,0.4);
-      position: relative;
     }
-
-    .progress-fill.ot { background: var(--orange); box-shadow: 0 0 8px rgba(255,149,0,0.4); }
-    .progress-fill.sunday { background: var(--red); box-shadow: 0 0 8px rgba(255,59,92,0.4); }
+    .progress-fill.ot     { background: var(--orange); box-shadow: 0 0 8px rgba(255,149,0,0.4); }
+    .progress-fill.sunday { background: var(--red);    box-shadow: 0 0 8px rgba(255,59,92,0.4); }
 
     .ot-marker {
       position: absolute;
@@ -311,7 +312,7 @@
     .progress-times {
       display: flex;
       justify-content: space-between;
-      margin-top: 6px;
+      margin-top: 5px;
       font-family: var(--mono);
       font-size: 11px;
       color: var(--dim);
@@ -322,7 +323,7 @@
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
     .btn {
@@ -333,23 +334,15 @@
       font-weight: 700;
       letter-spacing: 0.06em;
       cursor: pointer;
-      padding: 16px;
+      padding: 14px;
       transition: transform 0.1s, opacity 0.2s;
       -webkit-appearance: none;
     }
-
-    .btn:active { transform: scale(0.97); }
+    .btn:active   { transform: scale(0.97); }
     .btn:disabled { opacity: 0.4; cursor: default; }
 
-    .btn-start {
-      background: var(--green);
-      color: #000;
-    }
-    .btn-start.paused {
-      background: var(--dim2);
-      color: var(--fg);
-      border: 1px solid var(--border);
-    }
+    .btn-start        { background: var(--green); color: #000; }
+    .btn-start.paused { background: var(--dim2); color: var(--fg); border: 1px solid var(--border); }
 
     .btn-reset {
       background: var(--dim2);
@@ -363,25 +356,19 @@
       font-family: var(--mono);
       font-size: 11px;
       color: var(--dim);
-      margin-top: 10px;
+      margin-top: 8px;
       letter-spacing: 0.08em;
-      min-height: 16px;
+      min-height: 14px;
       padding-bottom: 4px;
     }
 
-    .pulse {
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
+    .pulse { animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
   </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- Header -->
   <div class="header">
     <div class="day-label">Today</div>
     <div class="date-line">
@@ -390,7 +377,7 @@
     </div>
   </div>
 
-  <!-- Inputs -->
+  <!-- 3-column inputs: Hourly | OT Hours | Clock-In -->
   <div class="inputs">
     <div class="input-group" id="hourlyGroup">
       <span class="input-label">Hourly Rate</span>
@@ -406,9 +393,17 @@
         <span class="input-prefix">h</span>
       </div>
     </div>
+    <div class="input-group" id="clockinGroup">
+      <span class="input-label">Clock In</span>
+      <div class="input-row">
+        <input type="time" id="clockinInput"/>
+      </div>
+    </div>
   </div>
 
-  <!-- Segment preview -->
+  <div class="clockin-badge" id="clockinBadge"></div>
+
+  <!-- Schedule preview -->
   <div class="segments">
     <div class="seg-title">Today's Schedule</div>
     <div class="seg-rows" id="segRows"></div>
@@ -418,7 +413,7 @@
     </div>
   </div>
 
-  <!-- Big number -->
+  <!-- Earnings -->
   <div class="display-wrap">
     <div class="earned-label">Earned This Shift</div>
     <div class="earned-display" id="earnedDisplay">$0.00</div>
@@ -434,28 +429,28 @@
     </div>
   </div>
 
-  <!-- Controls -->
   <div class="btn-row">
     <button class="btn btn-start" id="startBtn" onclick="toggleStart()">START</button>
     <button class="btn btn-reset" onclick="resetAll()">RESET</button>
   </div>
-  <div class="status" id="status">Enter rate &amp; OT hours, then tap START</div>
+  <div class="status" id="status">Set clock-in time, then tap START</div>
 
 </div>
 
 <script>
   // ── State ──
-  let running = false;
-  let elapsed = 0;      // seconds
+  let running  = false;
+  let elapsed  = 0;       // seconds since clock-in
+  let clockInSec = null;  // seconds-since-midnight of badge time
   let lastTick = null;
-  let rafId = null;
-  let breakpoints = []; // [{endSec, rateSec}]
-  let dayMax = 0;
-  let inOT = false;
+  let rafId    = null;
+  let breakpoints = [];
+  let dayMax   = 0;
+  let inOT     = false;
 
-  const weekday = new Date().getDay(); // 0=Sun, 6=Sat
+  const weekday = new Date().getDay(); // 0=Sun,6=Sat
 
-  // ── Init header ──
+  // ── Header ──
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const dn = document.getElementById('dayName');
   const rb = document.getElementById('rateBadge');
@@ -476,26 +471,28 @@
     rb.textContent = '1× + OT'; rb.className = 'rate-badge x1';
   }
 
+  // ── Default clock-in to now ──
+  function nowHHMM() {
+    const n = new Date();
+    return String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  }
+  document.getElementById('clockinInput').value = nowHHMM();
+
   // ── Schedule ──
   function buildSchedule(hourly, otHours) {
     const segs = [];
-    if (weekday === 0) {         // Sunday 2x
-      segs.push({ hours: 8 + otHours, mult: 2.0 });
-    } else if (weekday === 6) {  // Saturday 1.5x
-      segs.push({ hours: 8 + otHours, mult: 1.5 });
-    } else {                     // M–F
+    if (weekday === 0)      segs.push({ hours: 8 + otHours, mult: 2.0 });
+    else if (weekday === 6) segs.push({ hours: 8 + otHours, mult: 1.5 });
+    else {
       segs.push({ hours: 8, mult: 1.0 });
       if (otHours > 0) segs.push({ hours: otHours, mult: 1.5 });
     }
-
     let t = 0;
-    const bp = [];
-    for (const s of segs) {
+    return segs.map(s => {
       const rateSec = (hourly * s.mult) / 3600;
       t += s.hours * 3600;
-      bp.push({ endSec: t, rateSec });
-    }
-    return bp;
+      return { endSec: t, rateSec, hours: s.hours, mult: s.mult };
+    });
   }
 
   function earnedAt(sec) {
@@ -510,40 +507,64 @@
     return total;
   }
 
+  // Parse "HH:MM" → seconds since midnight
+  function parseTime(val) {
+    if (!val) return null;
+    const [h, m] = val.split(':').map(Number);
+    if (isNaN(h) || isNaN(m)) return null;
+    return h * 3600 + m * 60;
+  }
+
+  // Seconds-since-midnight → "H:MM AM/PM"
+  function fmtWallTime(sec) {
+    const h24 = Math.floor(sec / 3600) % 24;
+    const m   = Math.floor((sec % 3600) / 60);
+    const ampm = h24 >= 12 ? 'PM' : 'AM';
+    const h12  = h24 % 12 || 12;
+    return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+
   function refreshSchedule() {
     const hourly = parseFloat(document.getElementById('hourlyInput').value) || 0;
-    const ot = weekday === 0 || weekday === 6 ? 0 : (parseFloat(document.getElementById('otInput').value) || 0);
-    breakpoints = buildSchedule(hourly, ot);
-    dayMax = earnedAt(breakpoints[breakpoints.length - 1].endSec);
+    const ot     = (weekday === 0 || weekday === 6) ? 0 : (parseFloat(document.getElementById('otInput').value) || 0);
+    breakpoints  = buildSchedule(hourly, ot);
+    dayMax       = earnedAt(breakpoints[breakpoints.length - 1].endSec);
+
+    const ciSec  = parseTime(document.getElementById('clockinInput').value);
 
     // Segment rows
     const segRows = document.getElementById('segRows');
     segRows.innerHTML = '';
-    const segs = weekday === 0
-      ? [{ hours: 8 + ot, mult: 2.0 }]
-      : weekday === 6
-        ? [{ hours: 8 + ot, mult: 1.5 }]
-        : [{ hours: 8, mult: 1.0 }, ...(ot > 0 ? [{ hours: ot, mult: 1.5 }] : [])];
+    let cumSec = 0;
+    for (const bp of breakpoints) {
+      const s    = bp;
+      const pay  = hourly * s.mult * s.hours;
+      const cls  = s.mult === 2 ? 'x2' : s.mult === 1.5 ? 'x15' : 'x1';
+      const lbl  = s.mult === 2 ? '2×' : s.mult === 1.5 ? '1.5×' : '1×';
+      cumSec    += s.hours * 3600;
 
-    for (const s of segs) {
-      const pay = hourly * s.mult * s.hours;
-      const cls = s.mult === 2 ? 'x2' : s.mult === 1.5 ? 'x15' : 'x1';
-      const label = s.mult === 2 ? '2×' : s.mult === 1.5 ? '1.5×' : '1×';
+      // End wall time if clock-in is set
+      let endStr = '';
+      if (ciSec !== null) {
+        endStr = '→ ' + fmtWallTime(ciSec + cumSec);
+      }
+
       const row = document.createElement('div');
       row.className = 'seg-row';
       row.innerHTML = `
-        <span class="seg-pill ${cls}">${label}</span>
+        <span class="seg-pill ${cls}">${lbl}</span>
         <span class="seg-detail">${s.hours}h @ $${(hourly * s.mult).toFixed(2)}/hr</span>
         <span class="seg-pay">$${pay.toFixed(2)}</span>
+        <span class="seg-end">${endStr}</span>
       `;
       segRows.appendChild(row);
     }
 
     document.getElementById('dayTotalVal').textContent = `$${dayMax.toFixed(2)}`;
 
-    // OT marker position
+    // OT marker
     const marker = document.getElementById('otMarker');
-    if (weekday < 6 && weekday > 0 && ot > 0 && breakpoints.length > 1) {
+    if (weekday > 0 && weekday < 6 && ot > 0 && breakpoints.length > 1) {
       const otFrac = (8 * 3600) / breakpoints[breakpoints.length - 1].endSec;
       marker.style.left = `calc(${otFrac * 100}% - 1px)`;
       marker.style.display = 'block';
@@ -552,54 +573,48 @@
     }
   }
 
-  document.getElementById('hourlyInput').addEventListener('input', () => { if (!running) refreshSchedule(); });
-  document.getElementById('otInput').addEventListener('input', () => { if (!running) refreshSchedule(); });
+  document.getElementById('hourlyInput').addEventListener('input',  () => { if (!running) refreshSchedule(); });
+  document.getElementById('otInput').addEventListener('input',      () => { if (!running) refreshSchedule(); });
+  document.getElementById('clockinInput').addEventListener('change',() => { if (!running) refreshSchedule(); });
 
-  // ── Load saved rate ──
+  // Load saved rate
   const saved = localStorage.getItem('salary_hourly');
   if (saved) document.getElementById('hourlyInput').value = saved;
   refreshSchedule();
 
-  // ── Timer ──
+  // ── Timer (wall-clock based) ──
+  function getElapsedFromWall() {
+    if (clockInSec === null) return 0;
+    const now = new Date();
+    const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() + now.getMilliseconds() / 1000;
+    return Math.max(nowSec - clockInSec, 0);
+  }
+
   function tick(ts) {
     if (!running) return;
-    if (lastTick === null) lastTick = ts;
-    const delta = (ts - lastTick) / 1000;
-    lastTick = ts;
-    elapsed += delta;
+    elapsed = getElapsedFromWall();
 
-    const totalSec = breakpoints[breakpoints.length - 1].endSec;
+    const totalSec      = breakpoints[breakpoints.length - 1].endSec;
     const clampedElapsed = Math.min(elapsed, totalSec);
-    const earned = earnedAt(clampedElapsed);
+    const earned        = earnedAt(clampedElapsed);
 
-    // Detect OT zone
-    const nowInOT = weekday < 6 && weekday > 0 && elapsed > 8 * 3600;
-    if (nowInOT !== inOT) {
-      inOT = nowInOT;
-      updateColors();
-    }
+    const nowInOT = weekday > 0 && weekday < 6 && elapsed > 8 * 3600;
+    if (nowInOT !== inOT) { inOT = nowInOT; updateColors(); }
 
-    // Display
     document.getElementById('earnedDisplay').textContent = '$' + earned.toFixed(2);
 
-    // Progress
     const pct = Math.min(clampedElapsed / totalSec * 100, 100);
     document.getElementById('progressFill').style.width = pct + '%';
 
-    // Times
-    document.getElementById('elapsedTime').textContent = fmtTime(clampedElapsed);
+    document.getElementById('elapsedTime').textContent   = fmtDuration(clampedElapsed);
     const rem = Math.max(totalSec - elapsed, 0);
-    document.getElementById('remainingTime').textContent = fmtTime(rem);
+    document.getElementById('remainingTime').textContent = fmtDuration(rem);
 
-    if (elapsed >= totalSec) {
-      complete();
-      return;
-    }
-
+    if (elapsed >= totalSec) { complete(); return; }
     rafId = requestAnimationFrame(tick);
   }
 
-  function fmtTime(sec) {
+  function fmtDuration(sec) {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
     const s = Math.floor(sec % 60);
@@ -609,35 +624,22 @@
   function updateColors() {
     const disp = document.getElementById('earnedDisplay');
     const fill = document.getElementById('progressFill');
-    if (weekday === 0) {
-      disp.className = 'earned-display sunday';
-      fill.className = 'progress-fill sunday';
-    } else if (inOT) {
-      disp.className = 'earned-display ot';
-      fill.className = 'progress-fill ot';
-    } else {
-      disp.className = 'earned-display';
-      fill.className = 'progress-fill';
-    }
+    if (weekday === 0)   { disp.className = 'earned-display sunday'; fill.className = 'progress-fill sunday'; }
+    else if (inOT)       { disp.className = 'earned-display ot';     fill.className = 'progress-fill ot'; }
+    else                 { disp.className = 'earned-display';         fill.className = 'progress-fill'; }
   }
 
   function complete() {
     running = false;
-    lastTick = null;
     const btn = document.getElementById('startBtn');
-    btn.disabled = true;
-    btn.textContent = 'DONE';
+    btn.disabled = true; btn.textContent = 'DONE';
     document.getElementById('status').textContent = 'SHIFT COMPLETE';
     document.getElementById('status').classList.remove('pulse');
   }
 
   // ── Controls ──
   function toggleStart() {
-    if (running) {
-      pauseTimer();
-    } else {
-      startTimer();
-    }
+    running ? pauseTimer() : startTimer();
   }
 
   function startTimer() {
@@ -646,17 +648,30 @@
       document.getElementById('status').textContent = 'Enter a valid hourly rate first';
       return;
     }
-    localStorage.setItem('salary_hourly', hourly);
-    refreshSchedule();
+    const ciVal = document.getElementById('clockinInput').value;
+    const ci    = parseTime(ciVal);
+    if (ci === null) {
+      document.getElementById('status').textContent = 'Enter a valid clock-in time';
+      return;
+    }
 
-    running = true;
-    lastTick = null;
-    inOT = false;
+    localStorage.setItem('salary_hourly', hourly);
+    clockInSec = ci;
+    elapsed    = getElapsedFromWall();
+    inOT       = false;
+
+    refreshSchedule();
     updateColors();
 
-    document.getElementById('hourlyInput').disabled = true;
-    document.getElementById('otInput').disabled = true;
-    document.getElementById('startBtn').textContent = 'PAUSE';
+    // Show badge
+    document.getElementById('clockinBadge').textContent =
+      `Clocked in at ${fmtWallTime(ci)}  ·  ${elapsed > 0 ? fmtDuration(elapsed) + ' already elapsed' : 'starting now'}`;
+
+    running = true;
+    document.getElementById('hourlyInput').disabled  = true;
+    document.getElementById('otInput').disabled      = true;
+    document.getElementById('clockinInput').disabled = true;
+    document.getElementById('startBtn').textContent  = 'PAUSE';
     document.getElementById('startBtn').classList.remove('paused');
     document.getElementById('status').textContent = 'RUNNING';
     document.getElementById('status').classList.add('pulse');
@@ -666,7 +681,6 @@
 
   function pauseTimer() {
     running = false;
-    lastTick = null;
     if (rafId) cancelAnimationFrame(rafId);
     document.getElementById('startBtn').textContent = 'RESUME';
     document.getElementById('startBtn').classList.add('paused');
@@ -675,33 +689,36 @@
   }
 
   function resetAll() {
-    running = false;
-    lastTick = null;
-    elapsed = 0;
-    inOT = false;
+    running    = false;
+    elapsed    = 0;
+    inOT       = false;
+    clockInSec = null;
     if (rafId) cancelAnimationFrame(rafId);
 
-    document.getElementById('earnedDisplay').textContent = '$0.00';
-    document.getElementById('earnedDisplay').className = 'earned-display';
-    document.getElementById('progressFill').style.width = '0%';
-    document.getElementById('progressFill').className = 'progress-fill';
-    document.getElementById('elapsedTime').textContent = '00:00:00';
-    document.getElementById('remainingTime').textContent = '--:--:--';
+    document.getElementById('earnedDisplay').textContent  = '$0.00';
+    document.getElementById('earnedDisplay').className    = 'earned-display';
+    document.getElementById('progressFill').style.width   = '0%';
+    document.getElementById('progressFill').className     = 'progress-fill';
+    document.getElementById('elapsedTime').textContent    = '00:00:00';
+    document.getElementById('remainingTime').textContent  = '--:--:--';
+    document.getElementById('clockinBadge').textContent   = '';
 
     const btn = document.getElementById('startBtn');
-    btn.textContent = 'START';
-    btn.className = 'btn btn-start';
-    btn.disabled = false;
+    btn.textContent = 'START'; btn.className = 'btn btn-start'; btn.disabled = false;
 
-    document.getElementById('hourlyInput').disabled = false;
+    document.getElementById('hourlyInput').disabled  = false;
+    document.getElementById('clockinInput').disabled = false;
     if (weekday !== 0 && weekday !== 6) document.getElementById('otInput').disabled = false;
-    document.getElementById('status').textContent = 'Enter rate & OT hours, then tap START';
+
+    // Reset clock-in to current time
+    document.getElementById('clockinInput').value = nowHHMM();
+
+    document.getElementById('status').textContent = 'Set clock-in time, then tap START';
     document.getElementById('status').classList.remove('pulse');
 
     refreshSchedule();
   }
 
-  // ── Service Worker ──
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
