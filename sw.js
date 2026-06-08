@@ -1,4 +1,4 @@
-const CACHE = 'salary-counter-v2';
+const CACHE = 'salary-counter-v3';
 const ASSETS = [
   './',
   './index.html',

@@ -58,7 +58,7 @@
       z-index: 0;
     }
 
-    .container {
+    .app {
       position: relative;
       z-index: 1;
       width: 100%;
@@ -69,36 +69,61 @@
       height: 100%;
     }
 
-    /* ── Header ── */
-    .header {
-      padding-top: 12px;
-      padding-bottom: 6px;
+    /* ── Tab Bar ── */
+    .tab-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      margin-top: 12px;
+      flex-shrink: 0;
     }
 
-    .day-label {
+    .tab {
+      font-family: var(--sans);
       font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 8px;
+      border-radius: 7px;
+      cursor: pointer;
+      color: var(--dim);
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      background: none;
+    }
+
+    .tab.active {
+      background: var(--dim2);
+      color: var(--fg);
+    }
+
+    /* ── Pages ── */
+    .page { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+    .page.active { display: flex; }
+
+    /* ── TODAY PAGE ── */
+    .header { padding-top: 10px; padding-bottom: 4px; flex-shrink: 0; }
+
+    .day-label {
+      font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--dim);
     }
 
-    .date-line {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-top: 2px;
-    }
+    .date-line { display: flex; align-items: baseline; gap: 10px; margin-top: 2px; }
 
-    .day-name {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      line-height: 1;
-    }
-    .day-name.weekday { color: var(--fg); }
+    .day-name { font-size: 26px; font-weight: 700; letter-spacing: 0.04em; line-height: 1; }
+    .day-name.weekday  { color: var(--fg); }
     .day-name.saturday { color: var(--orange); }
-    .day-name.sunday { color: var(--red); }
+    .day-name.sunday   { color: var(--red); }
 
     .rate-badge {
       font-family: var(--mono);
@@ -111,12 +136,12 @@
     .rate-badge.x15 { background: #2a2010; color: var(--orange); border: 1px solid #3a2e10; }
     .rate-badge.x2  { background: #2a1020; color: var(--red);    border: 1px solid #3a1a28; }
 
-    /* ── Input grid ── */
     .inputs {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 8px;
+      flex-shrink: 0;
     }
 
     .input-group {
@@ -139,84 +164,56 @@
       margin-bottom: 3px;
     }
 
-    .input-row {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
+    .input-row { display: flex; align-items: center; gap: 2px; }
 
-    .input-prefix {
-      font-family: var(--mono);
-      font-size: 14px;
-      color: var(--dim);
-      flex-shrink: 0;
-    }
+    .input-prefix { font-family: var(--mono); font-size: 14px; color: var(--dim); flex-shrink: 0; }
 
     input[type="number"], input[type="time"] {
-      background: none;
-      border: none;
-      outline: none;
-      color: var(--fg);
-      font-family: var(--mono);
-      font-size: 18px;
-      width: 100%;
+      background: none; border: none; outline: none;
+      color: var(--fg); font-family: var(--mono); font-size: 18px; width: 100%;
       -moz-appearance: textfield;
     }
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
     input[type="number"]:disabled,
     input[type="time"]:disabled { color: var(--dim); }
-
-    /* iOS time input color fix */
     input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.4); }
 
-    /* clock-in time badge shown while running */
     .clockin-badge {
       font-family: var(--mono);
       font-size: 11px;
       color: var(--dim);
-      margin-top: 6px;
+      margin-top: 5px;
       text-align: center;
       min-height: 14px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
     }
 
-    /* ── Segment Preview ── */
     .segments {
-      margin-top: 8px;
+      margin-top: 7px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 8px 12px;
+      flex-shrink: 0;
     }
 
     .seg-title {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 6px;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 5px;
     }
 
     .seg-rows { display: flex; flex-direction: column; gap: 4px; }
 
     .seg-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 12px;
     }
 
     .seg-pill {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 5px;
-      border-radius: 2px;
-      min-width: 32px;
-      text-align: center;
-      flex-shrink: 0;
+      font-size: 10px; font-weight: 700; padding: 2px 5px;
+      border-radius: 2px; min-width: 32px; text-align: center; flex-shrink: 0;
     }
     .seg-pill.x1  { background: #1a2a22; color: var(--green); }
     .seg-pill.x15 { background: #2a2010; color: var(--orange); }
@@ -224,259 +221,519 @@
 
     .seg-detail { color: var(--dim); flex: 1; }
     .seg-pay    { color: var(--fg); font-weight: bold; }
-
-    /* end time column */
-    .seg-end {
-      color: var(--dim);
-      font-size: 11px;
-      min-width: 42px;
-      text-align: right;
-    }
+    .seg-end    { color: var(--dim); font-size: 11px; min-width: 42px; text-align: right; }
 
     .seg-total {
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 12px;
+      margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-family: var(--mono); font-size: 12px;
     }
     .seg-total-label { color: var(--dim); }
     .seg-total-val   { color: var(--green); }
 
-    /* ── Big Display ── */
     .display-wrap {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 2px 0;
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; margin: 2px 0;
     }
 
     .earned-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-bottom: 2px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 2px;
     }
 
     .earned-display {
       font-family: var(--mono);
       font-size: clamp(42px, 13vw, 62px);
-      color: var(--green);
-      letter-spacing: -0.02em;
-      line-height: 1;
+      color: var(--green); letter-spacing: -0.02em; line-height: 1;
       transition: color 0.4s;
       text-shadow: 0 0 40px rgba(0,232,122,0.2);
     }
     .earned-display.ot     { color: var(--orange); text-shadow: 0 0 40px rgba(255,149,0,0.2); }
     .earned-display.sunday { color: var(--red);    text-shadow: 0 0 40px rgba(255,59,92,0.2); }
 
-    /* ── Progress ── */
     .progress-wrap { width: 100%; margin-top: 10px; }
 
     .progress-track {
-      width: 100%;
-      height: 6px;
-      background: var(--dim2);
-      border-radius: 3px;
-      position: relative;
-      overflow: visible;
+      width: 100%; height: 6px; background: var(--dim2);
+      border-radius: 3px; position: relative; overflow: visible;
     }
 
     .progress-fill {
-      height: 100%;
-      border-radius: 3px;
-      width: 0%;
+      height: 100%; border-radius: 3px; width: 0%;
       transition: width 0.1s linear, background 0.4s;
-      background: var(--green);
-      box-shadow: 0 0 8px rgba(0,232,122,0.4);
+      background: var(--green); box-shadow: 0 0 8px rgba(0,232,122,0.4);
     }
     .progress-fill.ot     { background: var(--orange); box-shadow: 0 0 8px rgba(255,149,0,0.4); }
     .progress-fill.sunday { background: var(--red);    box-shadow: 0 0 8px rgba(255,59,92,0.4); }
 
     .ot-marker {
-      position: absolute;
-      top: -4px;
-      width: 2px;
-      height: 14px;
-      background: var(--dim);
-      border-radius: 1px;
-      display: none;
+      position: absolute; top: -4px; width: 2px; height: 14px;
+      background: var(--dim); border-radius: 1px; display: none;
     }
 
     .progress-times {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 5px;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--dim);
+      display: flex; justify-content: space-between; margin-top: 5px;
+      font-family: var(--mono); font-size: 11px; color: var(--dim);
     }
 
-    /* ── Buttons ── */
     .btn-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
+      display: grid; grid-template-columns: 2fr 1fr;
+      gap: 10px; margin-top: 10px; flex-shrink: 0;
     }
 
     .btn {
-      border: none;
-      border-radius: 10px;
-      font-family: var(--sans);
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      padding: 14px;
-      transition: transform 0.1s, opacity 0.2s;
-      -webkit-appearance: none;
+      border: none; border-radius: 10px; font-family: var(--sans);
+      font-size: 18px; font-weight: 700; letter-spacing: 0.06em;
+      cursor: pointer; padding: 14px;
+      transition: transform 0.1s, opacity 0.2s; -webkit-appearance: none;
     }
     .btn:active   { transform: scale(0.97); }
     .btn:disabled { opacity: 0.4; cursor: default; }
 
     .btn-start        { background: var(--green); color: #000; }
     .btn-start.paused { background: var(--dim2); color: var(--fg); border: 1px solid var(--border); }
-
-    .btn-reset {
-      background: var(--dim2);
-      color: var(--dim);
-      border: 1px solid var(--border);
-      font-size: 15px;
-    }
+    .btn-reset        { background: var(--dim2); color: var(--dim); border: 1px solid var(--border); font-size: 15px; }
 
     .status {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--dim);
-      margin-top: 8px;
-      letter-spacing: 0.08em;
-      min-height: 14px;
-      padding-bottom: 4px;
+      text-align: center; font-family: var(--mono); font-size: 11px;
+      color: var(--dim); margin-top: 8px; letter-spacing: 0.08em;
+      min-height: 14px; padding-bottom: 4px; flex-shrink: 0;
     }
 
     .pulse { animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+    /* ── SUMMARY OVERLAY ── */
+    .summary-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .summary-overlay.show { display: flex; }
+
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 380px;
+      padding: 24px 22px 20px;
+      position: relative;
+    }
+
+    .summary-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 4px;
+    }
+
+    .summary-check {
+      font-size: 32px;
+      margin-bottom: 4px;
+    }
+
+    .summary-title {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--fg);
+    }
+
+    .summary-date {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    .summary-big {
+      font-family: var(--mono);
+      font-size: 48px;
+      font-weight: bold;
+      color: var(--green);
+      text-align: center;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 30px rgba(0,232,122,0.25);
+      margin-bottom: 4px;
+    }
+
+    .summary-big.ot     { color: var(--orange); text-shadow: 0 0 30px rgba(255,149,0,0.25); }
+    .summary-big.sunday { color: var(--red);    text-shadow: 0 0 30px rgba(255,59,92,0.25); }
+
+    .summary-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 14px 0;
+    }
+
+    .summary-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .summary-meta-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .summary-meta-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .summary-meta-val {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--fg);
+    }
+
+    .summary-segs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+
+    .summary-seg-row {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 12px;
+    }
+
+    .summary-seg-detail { color: var(--dim); flex: 1; }
+    .summary-seg-pay    { color: var(--fg); font-weight: bold; }
+
+    .summary-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 13px;
+      background: var(--bg); border-radius: 8px; padding: 10px 12px;
+    }
+    .summary-total-label { color: var(--dim); }
+    .summary-total-val   { color: var(--green); font-size: 16px; }
+
+    .summary-btn-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-top: 16px;
+    }
+
+    .summary-btn {
+      border: none; border-radius: 8px; font-family: var(--sans);
+      font-size: 15px; font-weight: 700; letter-spacing: 0.05em;
+      cursor: pointer; padding: 12px; -webkit-appearance: none;
+    }
+    .summary-btn:active { transform: scale(0.97); }
+    .summary-btn-close  { background: var(--dim2); color: var(--dim); border: 1px solid var(--border); }
+    .summary-btn-share  { background: var(--green); color: #000; }
+
+    /* ── HISTORY PAGE ── */
+    .history-page {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      padding-top: 10px;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .history-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .history-clear {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .history-summary-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .hist-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .hist-stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .hist-stat-val {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--green);
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 8px;
+    }
+
+    .history-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--dim);
+    }
+
+    .history-empty-icon { font-size: 32px; opacity: 0.3; }
+    .history-empty-text { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; }
+
+    .history-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .history-item:active { border-color: var(--green-dim); }
+
+    .history-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .history-item-date {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .history-item-pay {
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--green);
+    }
+    .history-item-pay.ot     { color: var(--orange); }
+    .history-item-pay.sunday { color: var(--red); }
+
+    .history-item-meta {
+      display: flex;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    .history-item-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+    .history-item-tag.x1  { background: #1a2a22; color: var(--green); }
+    .history-item-tag.x15 { background: #2a2010; color: var(--orange); }
+    .history-item-tag.x2  { background: #2a1020; color: var(--red); }
   </style>
 </head>
 <body>
-<div class="container">
+<div class="app">
 
-  <div class="header">
-    <div class="day-label">Today</div>
-    <div class="date-line">
-      <div class="day-name" id="dayName">Monday</div>
-      <div class="rate-badge x1" id="rateBadge">1x</div>
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab active" id="tabToday"   onclick="switchTab('today')">Today</button>
+    <button class="tab"        id="tabHistory" onclick="switchTab('history')">History</button>
+  </div>
+
+  <!-- TODAY PAGE -->
+  <div class="page active" id="pageToday">
+
+    <div class="header">
+      <div class="day-label">Today</div>
+      <div class="date-line">
+        <div class="day-name" id="dayName">Monday</div>
+        <div class="rate-badge x1" id="rateBadge">1x</div>
+      </div>
+    </div>
+
+    <div class="inputs">
+      <div class="input-group" id="hourlyGroup">
+        <span class="input-label">Hourly Rate</span>
+        <div class="input-row">
+          <span class="input-prefix">$</span>
+          <input type="number" id="hourlyInput" value="32.50" step="0.01" min="0" inputmode="decimal"/>
+        </div>
+      </div>
+      <div class="input-group" id="otGroup">
+        <span class="input-label">OT Hours</span>
+        <div class="input-row">
+          <input type="number" id="otInput" value="0" step="0.5" min="0" inputmode="decimal" style="text-align:right"/>
+          <span class="input-prefix">h</span>
+        </div>
+      </div>
+      <div class="input-group" id="clockinGroup">
+        <span class="input-label">Clock In</span>
+        <div class="input-row">
+          <input type="time" id="clockinInput"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="clockin-badge" id="clockinBadge"></div>
+
+    <div class="segments">
+      <div class="seg-title">Today's Schedule</div>
+      <div class="seg-rows" id="segRows"></div>
+      <div class="seg-total">
+        <span class="seg-total-label">DAY TOTAL</span>
+        <span class="seg-total-val" id="dayTotalVal">$0.00</span>
+      </div>
+    </div>
+
+    <div class="display-wrap">
+      <div class="earned-label">Earned This Shift</div>
+      <div class="earned-display" id="earnedDisplay">$0.00</div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="ot-marker" id="otMarker"></div>
+        </div>
+        <div class="progress-times">
+          <span id="elapsedTime">00:00:00</span>
+          <span id="remainingTime">--:--:--</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-start" id="startBtn" onclick="toggleStart()">START</button>
+      <button class="btn btn-reset" onclick="resetAll()">RESET</button>
+    </div>
+    <div class="status" id="status">Set clock-in time, then tap START</div>
+
+  </div><!-- /pageToday -->
+
+  <!-- HISTORY PAGE -->
+  <div class="page" id="pageHistory">
+    <div class="history-page">
+      <div class="history-header">
+        <div class="history-title">Shift History</div>
+        <button class="history-clear" onclick="clearHistory()">Clear All</button>
+      </div>
+      <div class="history-summary-bar" id="histSummaryBar"></div>
+      <div class="history-list" id="historyList"></div>
     </div>
   </div>
 
-  <!-- 3-column inputs: Hourly | OT Hours | Clock-In -->
-  <div class="inputs">
-    <div class="input-group" id="hourlyGroup">
-      <span class="input-label">Hourly Rate</span>
-      <div class="input-row">
-        <span class="input-prefix">$</span>
-        <input type="number" id="hourlyInput" value="32.50" step="0.01" min="0" inputmode="decimal"/>
-      </div>
-    </div>
-    <div class="input-group" id="otGroup">
-      <span class="input-label">OT Hours</span>
-      <div class="input-row">
-        <input type="number" id="otInput" value="0" step="0.5" min="0" inputmode="decimal" style="text-align:right"/>
-        <span class="input-prefix">h</span>
-      </div>
-    </div>
-    <div class="input-group" id="clockinGroup">
-      <span class="input-label">Clock In</span>
-      <div class="input-row">
-        <input type="time" id="clockinInput"/>
-      </div>
-    </div>
-  </div>
+</div><!-- /app -->
 
-  <div class="clockin-badge" id="clockinBadge"></div>
-
-  <!-- Schedule preview -->
-  <div class="segments">
-    <div class="seg-title">Today's Schedule</div>
-    <div class="seg-rows" id="segRows"></div>
-    <div class="seg-total">
-      <span class="seg-total-label">DAY TOTAL</span>
-      <span class="seg-total-val" id="dayTotalVal">$0.00</span>
+<!-- SUMMARY OVERLAY -->
+<div class="summary-overlay" id="summaryOverlay">
+  <div class="summary-card" id="summaryCard">
+    <div class="summary-header">
+      <div class="summary-check">✓</div>
+      <div class="summary-title">Shift Complete</div>
+      <div class="summary-date" id="sumDate"></div>
+    </div>
+    <div class="summary-big" id="sumBig">$0.00</div>
+    <hr class="summary-divider"/>
+    <div class="summary-meta" id="sumMeta"></div>
+    <div class="summary-segs" id="sumSegs"></div>
+    <div class="summary-total-row">
+      <span class="summary-total-label">GROSS EARNED</span>
+      <span class="summary-total-val" id="sumTotal">$0.00</span>
+    </div>
+    <div class="summary-btn-row">
+      <button class="summary-btn summary-btn-close" onclick="closeSummary()">Done</button>
+      <button class="summary-btn summary-btn-share" onclick="shareShift()">Share</button>
     </div>
   </div>
-
-  <!-- Earnings -->
-  <div class="display-wrap">
-    <div class="earned-label">Earned This Shift</div>
-    <div class="earned-display" id="earnedDisplay">$0.00</div>
-    <div class="progress-wrap">
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill"></div>
-        <div class="ot-marker" id="otMarker"></div>
-      </div>
-      <div class="progress-times">
-        <span id="elapsedTime">00:00:00</span>
-        <span id="remainingTime">--:--:--</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-start" id="startBtn" onclick="toggleStart()">START</button>
-    <button class="btn btn-reset" onclick="resetAll()">RESET</button>
-  </div>
-  <div class="status" id="status">Set clock-in time, then tap START</div>
-
 </div>
 
 <script>
   // ── State ──
-  let running  = false;
-  let elapsed  = 0;       // seconds since clock-in
-  let clockInSec = null;  // seconds-since-midnight of badge time
-  let lastTick = null;
-  let rafId    = null;
+  let running    = false;
+  let elapsed    = 0;
+  let clockInSec = null;
+  let rafId      = null;
   let breakpoints = [];
-  let dayMax   = 0;
-  let inOT     = false;
+  let dayMax     = 0;
+  let inOT       = false;
+  let currentShiftData = null; // saved on complete for share
 
-  const weekday = new Date().getDay(); // 0=Sun,6=Sat
+  const weekday = new Date().getDay();
+  const days    = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   // ── Header ──
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const dn = document.getElementById('dayName');
   const rb = document.getElementById('rateBadge');
   dn.textContent = days[weekday];
-
   if (weekday === 0) {
-    dn.className = 'day-name sunday';
-    rb.textContent = '2×'; rb.className = 'rate-badge x2';
+    dn.className = 'day-name sunday'; rb.textContent = '2×'; rb.className = 'rate-badge x2';
     document.getElementById('otGroup').classList.add('disabled');
     document.getElementById('otInput').disabled = true;
   } else if (weekday === 6) {
-    dn.className = 'day-name saturday';
-    rb.textContent = '1.5×'; rb.className = 'rate-badge x15';
+    dn.className = 'day-name saturday'; rb.textContent = '1.5×'; rb.className = 'rate-badge x15';
     document.getElementById('otGroup').classList.add('disabled');
     document.getElementById('otInput').disabled = true;
   } else {
-    dn.className = 'day-name weekday';
-    rb.textContent = '1× + OT'; rb.className = 'rate-badge x1';
+    dn.className = 'day-name weekday'; rb.textContent = '1× + OT'; rb.className = 'rate-badge x1';
   }
 
-  // ── Default clock-in to now ──
+  // ── Default clock-in ──
   function nowHHMM() {
     const n = new Date();
     return String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
   }
   document.getElementById('clockinInput').value = nowHHMM();
+
+  // ── Tabs ──
+  function switchTab(tab) {
+    document.getElementById('tabToday').classList.toggle('active',   tab === 'today');
+    document.getElementById('tabHistory').classList.toggle('active', tab === 'history');
+    document.getElementById('pageToday').classList.toggle('active',   tab === 'today');
+    document.getElementById('pageHistory').classList.toggle('active', tab === 'history');
+    if (tab === 'history') renderHistory();
+  }
 
   // ── Schedule ──
   function buildSchedule(hourly, otHours) {
@@ -507,7 +764,6 @@
     return total;
   }
 
-  // Parse "HH:MM" → seconds since midnight
   function parseTime(val) {
     if (!val) return null;
     const [h, m] = val.split(':').map(Number);
@@ -515,13 +771,19 @@
     return h * 3600 + m * 60;
   }
 
-  // Seconds-since-midnight → "H:MM AM/PM"
   function fmtWallTime(sec) {
-    const h24 = Math.floor(sec / 3600) % 24;
-    const m   = Math.floor((sec % 3600) / 60);
+    const h24  = Math.floor(sec / 3600) % 24;
+    const m    = Math.floor((sec % 3600) / 60);
     const ampm = h24 >= 12 ? 'PM' : 'AM';
     const h12  = h24 % 12 || 12;
     return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+
+  function fmtDuration(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = Math.floor(sec % 60);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
 
   function refreshSchedule() {
@@ -529,40 +791,29 @@
     const ot     = (weekday === 0 || weekday === 6) ? 0 : (parseFloat(document.getElementById('otInput').value) || 0);
     breakpoints  = buildSchedule(hourly, ot);
     dayMax       = earnedAt(breakpoints[breakpoints.length - 1].endSec);
-
     const ciSec  = parseTime(document.getElementById('clockinInput').value);
 
-    // Segment rows
     const segRows = document.getElementById('segRows');
     segRows.innerHTML = '';
     let cumSec = 0;
     for (const bp of breakpoints) {
-      const s    = bp;
-      const pay  = hourly * s.mult * s.hours;
-      const cls  = s.mult === 2 ? 'x2' : s.mult === 1.5 ? 'x15' : 'x1';
-      const lbl  = s.mult === 2 ? '2×' : s.mult === 1.5 ? '1.5×' : '1×';
-      cumSec    += s.hours * 3600;
-
-      // End wall time if clock-in is set
-      let endStr = '';
-      if (ciSec !== null) {
-        endStr = '→ ' + fmtWallTime(ciSec + cumSec);
-      }
-
+      const pay  = hourly * bp.mult * bp.hours;
+      const cls  = bp.mult === 2 ? 'x2' : bp.mult === 1.5 ? 'x15' : 'x1';
+      const lbl  = bp.mult === 2 ? '2×' : bp.mult === 1.5 ? '1.5×' : '1×';
+      cumSec    += bp.hours * 3600;
+      const endStr = ciSec !== null ? '→ ' + fmtWallTime(ciSec + cumSec) : '';
       const row = document.createElement('div');
       row.className = 'seg-row';
       row.innerHTML = `
         <span class="seg-pill ${cls}">${lbl}</span>
-        <span class="seg-detail">${s.hours}h @ $${(hourly * s.mult).toFixed(2)}/hr</span>
+        <span class="seg-detail">${bp.hours}h @ $${(hourly * bp.mult).toFixed(2)}/hr</span>
         <span class="seg-pay">$${pay.toFixed(2)}</span>
-        <span class="seg-end">${endStr}</span>
-      `;
+        <span class="seg-end">${endStr}</span>`;
       segRows.appendChild(row);
     }
 
     document.getElementById('dayTotalVal').textContent = `$${dayMax.toFixed(2)}`;
 
-    // OT marker
     const marker = document.getElementById('otMarker');
     if (weekday > 0 && weekday < 6 && ot > 0 && breakpoints.length > 1) {
       const otFrac = (8 * 3600) / breakpoints[breakpoints.length - 1].endSec;
@@ -573,19 +824,18 @@
     }
   }
 
-  document.getElementById('hourlyInput').addEventListener('input',  () => { if (!running) refreshSchedule(); });
-  document.getElementById('otInput').addEventListener('input',      () => { if (!running) refreshSchedule(); });
-  document.getElementById('clockinInput').addEventListener('change',() => { if (!running) refreshSchedule(); });
+  document.getElementById('hourlyInput').addEventListener('input',   () => { if (!running) refreshSchedule(); });
+  document.getElementById('otInput').addEventListener('input',       () => { if (!running) refreshSchedule(); });
+  document.getElementById('clockinInput').addEventListener('change', () => { if (!running) refreshSchedule(); });
 
-  // Load saved rate
   const saved = localStorage.getItem('salary_hourly');
   if (saved) document.getElementById('hourlyInput').value = saved;
   refreshSchedule();
 
-  // ── Timer (wall-clock based) ──
+  // ── Timer ──
   function getElapsedFromWall() {
     if (clockInSec === null) return 0;
-    const now = new Date();
+    const now    = new Date();
     const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds() + now.getMilliseconds() / 1000;
     return Math.max(nowSec - clockInSec, 0);
   }
@@ -593,32 +843,20 @@
   function tick(ts) {
     if (!running) return;
     elapsed = getElapsedFromWall();
-
-    const totalSec      = breakpoints[breakpoints.length - 1].endSec;
+    const totalSec       = breakpoints[breakpoints.length - 1].endSec;
     const clampedElapsed = Math.min(elapsed, totalSec);
-    const earned        = earnedAt(clampedElapsed);
+    const earned         = earnedAt(clampedElapsed);
 
     const nowInOT = weekday > 0 && weekday < 6 && elapsed > 8 * 3600;
     if (nowInOT !== inOT) { inOT = nowInOT; updateColors(); }
 
     document.getElementById('earnedDisplay').textContent = '$' + earned.toFixed(2);
-
-    const pct = Math.min(clampedElapsed / totalSec * 100, 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-
+    document.getElementById('progressFill').style.width  = Math.min(clampedElapsed / totalSec * 100, 100) + '%';
     document.getElementById('elapsedTime').textContent   = fmtDuration(clampedElapsed);
-    const rem = Math.max(totalSec - elapsed, 0);
-    document.getElementById('remainingTime').textContent = fmtDuration(rem);
+    document.getElementById('remainingTime').textContent = fmtDuration(Math.max(totalSec - elapsed, 0));
 
     if (elapsed >= totalSec) { complete(); return; }
     rafId = requestAnimationFrame(tick);
-  }
-
-  function fmtDuration(sec) {
-    const h = Math.floor(sec / 3600);
-    const m = Math.floor((sec % 3600) / 60);
-    const s = Math.floor(sec % 60);
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
 
   function updateColors() {
@@ -629,43 +867,214 @@
     else                 { disp.className = 'earned-display';         fill.className = 'progress-fill'; }
   }
 
+  // ── Shift complete ──
   function complete() {
     running = false;
+    const hourly  = parseFloat(document.getElementById('hourlyInput').value);
+    const ot      = (weekday === 0 || weekday === 6) ? 0 : (parseFloat(document.getElementById('otInput').value) || 0);
+    const totalSec = breakpoints[breakpoints.length - 1].endSec;
+    const earned  = earnedAt(totalSec);
+    const now     = new Date();
+
+    const shiftData = {
+      ts:        now.toISOString(),
+      date:      now.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' }),
+      weekday:   weekday,
+      clockIn:   fmtWallTime(clockInSec),
+      clockOut:  fmtWallTime(clockInSec + totalSec),
+      hourly:    hourly,
+      otHours:   ot,
+      totalHours: totalSec / 3600,
+      earned:    earned,
+      segments:  breakpoints.map(bp => ({
+        hours: bp.hours, mult: bp.mult,
+        pay: hourly * bp.mult * bp.hours
+      }))
+    };
+
+    currentShiftData = shiftData;
+    saveShift(shiftData);
+    showSummary(shiftData);
+
     const btn = document.getElementById('startBtn');
     btn.disabled = true; btn.textContent = 'DONE';
     document.getElementById('status').textContent = 'SHIFT COMPLETE';
     document.getElementById('status').classList.remove('pulse');
   }
 
-  // ── Controls ──
-  function toggleStart() {
-    running ? pauseTimer() : startTimer();
+  // ── Summary overlay ──
+  function showSummary(s) {
+    const dayColor = s.weekday === 0 ? 'sunday' : (s.otHours > 0 ? 'ot' : '');
+
+    document.getElementById('sumDate').textContent = s.date;
+    const bigEl = document.getElementById('sumBig');
+    bigEl.textContent = '$' + s.earned.toFixed(2);
+    bigEl.className = 'summary-big' + (dayColor ? ' ' + dayColor : '');
+
+    // Meta grid
+    const meta = document.getElementById('sumMeta');
+    meta.innerHTML = `
+      <div class="summary-meta-item">
+        <div class="summary-meta-label">Clock In</div>
+        <div class="summary-meta-val">${s.clockIn}</div>
+      </div>
+      <div class="summary-meta-item">
+        <div class="summary-meta-label">Clock Out</div>
+        <div class="summary-meta-val">${s.clockOut}</div>
+      </div>
+      <div class="summary-meta-item">
+        <div class="summary-meta-label">Total Hours</div>
+        <div class="summary-meta-val">${s.totalHours.toFixed(1)}h</div>
+      </div>
+      <div class="summary-meta-item">
+        <div class="summary-meta-label">Hourly Rate</div>
+        <div class="summary-meta-val">$${s.hourly.toFixed(2)}</div>
+      </div>`;
+
+    // Segments
+    const segs = document.getElementById('sumSegs');
+    segs.innerHTML = '';
+    for (const seg of s.segments) {
+      const cls = seg.mult === 2 ? 'x2' : seg.mult === 1.5 ? 'x15' : 'x1';
+      const lbl = seg.mult === 2 ? '2×' : seg.mult === 1.5 ? '1.5×' : '1×';
+      const row = document.createElement('div');
+      row.className = 'summary-seg-row';
+      row.innerHTML = `
+        <span class="seg-pill ${cls}">${lbl}</span>
+        <span class="summary-seg-detail">${seg.hours}h @ $${(s.hourly * seg.mult).toFixed(2)}/hr</span>
+        <span class="summary-seg-pay">$${seg.pay.toFixed(2)}</span>`;
+      segs.appendChild(row);
+    }
+
+    document.getElementById('sumTotal').textContent = '$' + s.earned.toFixed(2);
+    document.getElementById('summaryOverlay').classList.add('show');
   }
+
+  function closeSummary() {
+    document.getElementById('summaryOverlay').classList.remove('show');
+  }
+
+  function shareShift() {
+    if (!currentShiftData) return;
+    const s = currentShiftData;
+    let text = `PAY CLOCK — ${s.date}\n`;
+    text += `Clock in:  ${s.clockIn}\n`;
+    text += `Clock out: ${s.clockOut}\n`;
+    text += `Hours:     ${s.totalHours.toFixed(1)}h\n`;
+    text += `──────────────────\n`;
+    for (const seg of s.segments) {
+      const lbl = seg.mult === 2 ? '2×' : seg.mult === 1.5 ? '1.5×' : '1×';
+      text += `${seg.hours}h @ ${lbl}  $${seg.pay.toFixed(2)}\n`;
+    }
+    text += `──────────────────\n`;
+    text += `GROSS TOTAL: $${s.earned.toFixed(2)}`;
+
+    if (navigator.share) {
+      navigator.share({ title: 'Shift Summary', text }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+  }
+
+  // ── localStorage history ──
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem('shift_history') || '[]'); }
+    catch { return []; }
+  }
+
+  function saveShift(shiftData) {
+    const history = loadHistory();
+    history.unshift(shiftData); // newest first
+    localStorage.setItem('shift_history', JSON.stringify(history));
+  }
+
+  function clearHistory() {
+    if (!confirm('Clear all shift history?')) return;
+    localStorage.removeItem('shift_history');
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = loadHistory();
+    const list    = document.getElementById('historyList');
+    const bar     = document.getElementById('histSummaryBar');
+    list.innerHTML = '';
+
+    if (history.length === 0) {
+      bar.innerHTML = '';
+      list.innerHTML = `
+        <div class="history-empty">
+          <div class="history-empty-icon">📋</div>
+          <div class="history-empty-text">No shifts logged yet</div>
+        </div>`;
+      return;
+    }
+
+    // Summary stats
+    const totalEarned = history.reduce((s, h) => s + h.earned, 0);
+    const totalHours  = history.reduce((s, h) => s + h.totalHours, 0);
+    const totalOT     = history.reduce((s, h) => s + (h.otHours || 0), 0);
+    bar.innerHTML = `
+      <div class="hist-stat">
+        <div class="hist-stat-label">Shifts</div>
+        <div class="hist-stat-val">${history.length}</div>
+      </div>
+      <div class="hist-stat">
+        <div class="hist-stat-label">Hours</div>
+        <div class="hist-stat-val">${totalHours.toFixed(1)}</div>
+      </div>
+      <div class="hist-stat">
+        <div class="hist-stat-label">Gross</div>
+        <div class="hist-stat-val">$${totalEarned.toFixed(0)}</div>
+      </div>`;
+
+    // Items
+    for (const s of history) {
+      const wd       = s.weekday;
+      const dayColor = wd === 0 ? 'sunday' : (s.otHours > 0 ? 'ot' : '');
+      const tags     = s.segments.map(seg => {
+        const cls = seg.mult === 2 ? 'x2' : seg.mult === 1.5 ? 'x15' : 'x1';
+        const lbl = seg.mult === 2 ? '2×' : seg.mult === 1.5 ? '1.5×' : '1×';
+        return `<span class="history-item-tag ${cls}">${lbl}</span>`;
+      }).join('');
+
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.innerHTML = `
+        <div class="history-item-top">
+          <div class="history-item-date">${s.date}</div>
+          <div class="history-item-pay ${dayColor}">$${s.earned.toFixed(2)}</div>
+        </div>
+        <div class="history-item-meta">
+          ${tags}
+          <span>${s.clockIn} – ${s.clockOut}</span>
+          <span>${s.totalHours.toFixed(1)}h</span>
+        </div>`;
+      item.onclick = () => { currentShiftData = s; showSummary(s); };
+      list.appendChild(item);
+    }
+  }
+
+  // ── Controls ──
+  function toggleStart() { running ? pauseTimer() : startTimer(); }
 
   function startTimer() {
     const hourly = parseFloat(document.getElementById('hourlyInput').value);
-    if (!hourly || hourly <= 0) {
-      document.getElementById('status').textContent = 'Enter a valid hourly rate first';
-      return;
-    }
-    const ciVal = document.getElementById('clockinInput').value;
-    const ci    = parseTime(ciVal);
-    if (ci === null) {
-      document.getElementById('status').textContent = 'Enter a valid clock-in time';
-      return;
-    }
+    if (!hourly || hourly <= 0) { document.getElementById('status').textContent = 'Enter a valid hourly rate first'; return; }
+    const ci = parseTime(document.getElementById('clockinInput').value);
+    if (ci === null) { document.getElementById('status').textContent = 'Enter a valid clock-in time'; return; }
 
     localStorage.setItem('salary_hourly', hourly);
     clockInSec = ci;
     elapsed    = getElapsedFromWall();
     inOT       = false;
-
     refreshSchedule();
     updateColors();
 
-    // Show badge
     document.getElementById('clockinBadge').textContent =
-      `Clocked in at ${fmtWallTime(ci)}  ·  ${elapsed > 0 ? fmtDuration(elapsed) + ' already elapsed' : 'starting now'}`;
+      `Clocked in at ${fmtWallTime(ci)}${elapsed > 0 ? '  ·  ' + fmtDuration(elapsed) + ' already elapsed' : ''}`;
 
     running = true;
     document.getElementById('hourlyInput').disabled  = true;
@@ -675,7 +1084,6 @@
     document.getElementById('startBtn').classList.remove('paused');
     document.getElementById('status').textContent = 'RUNNING';
     document.getElementById('status').classList.add('pulse');
-
     rafId = requestAnimationFrame(tick);
   }
 
@@ -689,19 +1097,16 @@
   }
 
   function resetAll() {
-    running    = false;
-    elapsed    = 0;
-    inOT       = false;
-    clockInSec = null;
+    running = false; elapsed = 0; inOT = false; clockInSec = null;
     if (rafId) cancelAnimationFrame(rafId);
 
-    document.getElementById('earnedDisplay').textContent  = '$0.00';
-    document.getElementById('earnedDisplay').className    = 'earned-display';
-    document.getElementById('progressFill').style.width   = '0%';
-    document.getElementById('progressFill').className     = 'progress-fill';
-    document.getElementById('elapsedTime').textContent    = '00:00:00';
-    document.getElementById('remainingTime').textContent  = '--:--:--';
-    document.getElementById('clockinBadge').textContent   = '';
+    document.getElementById('earnedDisplay').textContent = '$0.00';
+    document.getElementById('earnedDisplay').className   = 'earned-display';
+    document.getElementById('progressFill').style.width  = '0%';
+    document.getElementById('progressFill').className    = 'progress-fill';
+    document.getElementById('elapsedTime').textContent   = '00:00:00';
+    document.getElementById('remainingTime').textContent = '--:--:--';
+    document.getElementById('clockinBadge').textContent  = '';
 
     const btn = document.getElementById('startBtn');
     btn.textContent = 'START'; btn.className = 'btn btn-start'; btn.disabled = false;
@@ -709,13 +1114,9 @@
     document.getElementById('hourlyInput').disabled  = false;
     document.getElementById('clockinInput').disabled = false;
     if (weekday !== 0 && weekday !== 6) document.getElementById('otInput').disabled = false;
-
-    // Reset clock-in to current time
     document.getElementById('clockinInput').value = nowHHMM();
-
     document.getElementById('status').textContent = 'Set clock-in time, then tap START';
     document.getElementById('status').classList.remove('pulse');
-
     refreshSchedule();
   }
 
