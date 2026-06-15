@@ -1120,6 +1120,12 @@
     refreshSchedule();
   }
 
+  // Select-all on focus so tapping a number field replaces the default value
+  ['hourlyInput', 'otInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('focus', () => el.select());
+  });
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
